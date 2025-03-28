@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Evertz Quartz Router Controller</title>
+    <script src="./script.js" defer></script>
+    <script
+      src="node_modules/socket.io-client/dist/socket.io.js"
+      type="text/javascript"
+    ></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <label for="dest">Destination:</label>
+    <select name="dest" id="destSelect"></select>
+    <br />
+    <fieldset>
+      <legend>Source</legend>
+      <table>
+        <tr id="row1"></tr>
+        <tr id="row2"></tr>
+      </table>
+    </fieldset>
+    <br />
+    <label for="cmdBar">Cmd:</label><textarea id="cmdBar"></textarea>
+    <button id="takeButton">Take!!</button>
+  </body>
+</html>

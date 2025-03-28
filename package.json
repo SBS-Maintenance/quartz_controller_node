@@ -1,0 +1,16 @@
+{
+  "name": "quartz_controller_node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kim Syehoon",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "config.ini": "^0.0.60",
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  }
+}

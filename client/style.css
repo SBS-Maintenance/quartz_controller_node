@@ -1,0 +1,21 @@
+fieldset {
+  width: fit-content;
+  height: fit-content;
+}
+
+.src-button {
+  width: 100px;
+  height: 40px;
+  margin: 10px;
+}
+
+#cmdBar {
+  height: 15px;
+  width: 200px;
+}
+
+#takeButton {
+  height: 30px;
+  width: 100px;
+  margin-left: 20px;
+}
