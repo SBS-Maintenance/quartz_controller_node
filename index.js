@@ -1,6 +1,30 @@
 const express = require("express");
 const { Server } = require("socket.io");
 
+const { BrowserWindow } = require("electron");
+const electronApp = require("electron").app;
+
+const createWindow = () => {
+  const win = new BrowserWindow({ width: 1800, height: 350 });
+  win.loadFile("./client/index.html");
+};
+
+electronApp.whenReady().then(() => {
+  createWindow();
+
+  electronApp.on("activate", () => {
+    if (BrowserWindow.getAllWindows().length == 0) {
+      createWindow();
+    }
+  });
+});
+
+electronApp.on("window-all-closed", () => {
+  if (process.platform != "darwin") {
+    electronApp.quit();
+  }
+});
+
 const app = express();
 
 const server = require("http").createServer(app);

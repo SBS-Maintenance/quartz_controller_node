@@ -1,4 +1,4 @@
-const socket = io();
+const socket = io("http://localhost:3000");
 
 const src = { srcNum: 0, srcName: "?" };
 const dest = { destNum: 0, destName: "?" };
