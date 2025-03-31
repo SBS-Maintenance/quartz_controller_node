@@ -6,7 +6,7 @@ const app = express();
 const server = require("http").createServer(app);
 const io = new Server(server);
 
-const fs = require("node:fs");
+const fs = require("fs");
 
 const path = require("path");
 const publicPath = path.join(__dirname, "client");
@@ -15,7 +15,7 @@ app.use("/", express.static(publicPath));
 const configIni = require("config.ini");
 const conf = configIni.load("./config.ini");
 
-let selectedDest = conf.settings.dest ? conf.settings.dest : "0";
+let selectedDestNum = conf.settings.dest ? conf.settings.dest : "0";
 const targetIP = conf.settings.ip;
 
 const net = require("net");
@@ -28,6 +28,7 @@ socket.on("error", (err) => {
   console.log(err);
   io.emit("error", { err: err });
 });
+
 socket.on("timeout", (err) => {
   console.log(err);
   io.emit("error", { err: err });
@@ -41,36 +42,26 @@ socket.on("data", (data) => {
     io.emit("setSrcSelection", src);
   }
   if (rcvdString.startsWith(".UV")) {
-    if (rcvdString.split(",")[0].split("V")[1] == selectedDest) {
+    if (rcvdString.split(",")[0].split("V")[1] == selectedDestNum) {
       io.emit("setSrcSelection", rcvdString.split(",")[1].split("\r")[0]);
     }
   }
 });
 
-const interrogate = (dest) => {
-  selectedDest = dest;
-  socket.write(Buffer.from(`.IV${selectedDest}\r`, "ascii"));
+const interrogate = (destNum) => {
+  selectedDestNum = destNum;
+  socket.write(Buffer.from(`.IV${selectedDestNum}\r`, "ascii"));
 };
 
-const destsNames = {};
-const getDestsNames = () => {
-  for (let i = 1; i < 33; i++) {
-    destsNames[i] = conf.dest[i];
-  }
-};
-getDestsNames();
+const Names = { destNames: {}, srcNames: {} };
+for (let i = 1; i < 33; i++) {
+  Names.destsNames[i] = conf.dest[i];
+  Names.srcsNames[i] = conf.src[i];
+}
 
-const srcsNames = {};
-const getSrcsNames = () => {
-  for (let i = 1; i < 33; i++) {
-    srcsNames[i] = conf.src[i];
-  }
-};
-getSrcsNames();
-
-const saveDest = (dest) => {
-  conf.settings.dest = dest;
-  selectedDest = dest;
+const saveDest = (destNum) => {
+  conf.settings.destNum = destNum;
+  selectedDestNum = destNum;
   fs.writeFile("./config.ini", configIni.stringify(conf), (err) => {
     if (err) {
       console.log(err);
@@ -79,16 +70,19 @@ const saveDest = (dest) => {
 };
 
 io.on("connection", (sock) => {
-  sock.emit("destinations", destsNames);
-  sock.emit("srcs", srcsNames);
-  sock.emit("selectedDest", selectedDest - 1);
-  sock.on("take", (src) => {
-    socket.write(Buffer.from(`.SV${selectedDest},${src}\r`, "ascii"));
+  sock.emit("init", {
+    dests: Names.destNames,
+    srcs: Names.srcNames,
+    selectedDestNum: selectedDestNum,
   });
-  sock.on("destIndex", (dest) => {
-    interrogate(dest);
-    console.log(dest);
-    saveDest(dest);
+
+  sock.on("take", (src) => {
+    socket.write(Buffer.from(`.SV${selectedDestNum},${src}\r`, "ascii"));
+  });
+
+  sock.on("destNum", (destNum) => {
+    interrogate(destNum);
+    saveDest(destNum);
   });
 });
 

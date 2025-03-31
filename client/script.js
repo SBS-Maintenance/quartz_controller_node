@@ -1,7 +1,7 @@
 const socket = io();
 
-let src = { srcNum: 0, srcName: "" };
-let dest = { destNum: 0, destName: "" };
+const src = { srcNum: 0, srcName: "" };
+const dest = { destNum: 0, destName: "" };
 
 let cmd = "";
 
@@ -30,7 +30,7 @@ destSelect.addEventListener("change", (ev) => {
   for (let i = 1; i < 33; i++) {
     document.getElementById("src_" + i).style.backgroundColor = "white";
   }
-  socket.emit("destIndex", dest.destNum);
+  socket.emit("destNum", dest.destNum);
 });
 
 const srcButtonClicked = (ev) => {
@@ -56,7 +56,6 @@ for (let i = 1; i < 17; i++) {
   td.appendChild(button);
   button.id = "src_" + i;
   button.addEventListener("click", (ev) => {
-    console.log(ev);
     srcButtonClicked(ev);
   });
   button.style.backgroundColor = "white";
@@ -77,28 +76,33 @@ for (let i = 17; i < 33; i++) {
   row2.append(td);
 }
 
-socket.on("destinations", (dests) => {
+socket.on("init", (info) => {
   for (let i = 1; i < 33; i++) {
     const option = document.createElement("option");
     option.value = i;
-    option.innerText = dests[i];
+    option.innerText = info.destsNames[i];
     destSelect.appendChild(option);
   }
-});
 
-socket.on("srcs", (srcs) => {
   for (let i = 1; i < 33; i++) {
-    document.getElementById("src_" + i).innerText = srcs[i];
+    document.getElementById("src_" + i).innerText = info.srcsNames[i];
   }
+
+  destSelect.selectedIndex = info.selectedDestNum - 1;
+  dest.destNum = destSelect.options[destSelect.selectedIndex].value;
+  dest.destName = destSelect.options[destSelect.selectedIndex].innerText;
+  cmd = `${src.srcName} -> ${dest.destName}`;
+  cmdBar.innerText = cmd;
+  socket.emit("destIndex", dest.destNum);
 });
 
-socket.on("selectedDest", (destIndex) => {
-  destSelect.selectedIndex = destIndex;
+socket.on("selectedDest", (destNum) => {
+  destSelect.selectedIndex = destNum - 1;
   dest.destNum = destSelect.options[destIndex].value;
   dest.destName = destSelect.options[destIndex].innerText;
   cmd = `${src.srcName} -> ${dest.destName}`;
   cmdBar.innerText = cmd;
-  socket.emit("destIndex", dest.destNum);
+  socket.emit("destNum", dest.destNum);
 });
 
 socket.on("setSrcSelection", (src) => {
