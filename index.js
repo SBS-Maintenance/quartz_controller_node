@@ -6,7 +6,7 @@ const electronApp = require("electron").app;
 
 const createWindow = () => {
   const win = new BrowserWindow({ width: 1800, height: 350 });
-  win.loadFile("./client/index.html");
+  win.loadFile("./index.html");
 };
 
 electronApp.whenReady().then(() => {
@@ -17,6 +17,43 @@ electronApp.whenReady().then(() => {
       createWindow();
     }
   });
+});
+
+const { dialog } = require("electron");
+const { autoUpdater } = require("electron-updater");
+const ProgressBar = require("electron-progressbar");
+
+autoUpdater.autoDownload = true;
+autoUpdater.once("download-progress", (progressObj) => {
+  progressBar = new ProgressBar({
+    text: "Downloading...",
+    detail: "Downloading...",
+  });
+
+  progressBar
+    .on("completed", function () {
+      console.info(`completed...`);
+      progressBar.detail = "Task completed. Exiting...";
+    })
+    .on("aborted", function () {
+      console.info(`aborted...`);
+    });
+});
+
+autoUpdater.on("update-downloaded", () => {
+  progressBar.setCompleted();
+  dialog
+    .showMessageBox({
+      type: "info",
+      title: "Update ready",
+      message: "Install & restart now?",
+      buttons: ["Restart", "Later"],
+    })
+    .then((result) => {
+      const buttonIndex = result.response;
+
+      if (buttonIndex === 0) autoUpdater.quitAndInstall(false, true);
+    });
 });
 
 electronApp.on("window-all-closed", () => {
@@ -33,7 +70,7 @@ const io = new Server(server);
 const fs = require("fs");
 
 const path = require("path");
-const publicPath = path.join(__dirname, "client");
+const publicPath = path.join(__dirname);
 app.use("/", express.static(publicPath));
 
 const configIni = require("config.ini");

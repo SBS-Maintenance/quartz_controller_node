@@ -1,20 +1,59 @@
 {
   "name": "quartz_controller_node",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "release": "electron-builder"
   },
   "author": "Kim Syehoon",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "config.ini": "^0.0.60",
+    "electron-progressbar": "^2.2.1",
+    "electron-updater": "^6.6.2",
     "express": "^4.21.2",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
-    "electron": "^35.1.2"
+    "electron": "^35.1.2",
+    "electron-builder": "^26.0.12"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SBS-Maintenance/quartz_controller_node.git"
+  },
+  "build": {
+    "appId": "com.sbs.quartz_controller_node",
+    "publish": {
+      "provider": "github"
+    },
+    "win": {
+      "publish": [
+        "github"
+      ],
+      "verifyUpdateCodeSignature": true,
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "directories": {
+      "output": "build"
+    },
+    "extraFiles": [
+      {
+        "from": "./config.ini",
+        "to": "./",
+        "filter": "**/*"
+      }
+    ]
   }
 }
