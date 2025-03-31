@@ -1,11 +1,13 @@
 const socket = io();
 
-const src = { srcNum: 0, srcName: "" };
-const dest = { destNum: 0, destName: "" };
+const src = { srcNum: 0, srcName: "?" };
+const dest = { destNum: 0, destName: "?" };
 
 let cmd = "";
 
 const cmdBar = document.getElementById("cmdBar");
+
+let hasTaken = false;
 
 const takeButton = document.getElementById("takeButton");
 const defaultBgColor = takeButton.style.backgroundColor;
@@ -16,17 +18,18 @@ takeButton.addEventListener("click", (ev) => {
   for (let i = 1; i < 33; i++) {
     document.getElementById("src_" + i).style.backgroundColor = "white";
   }
+  hasTaken = true;
 });
 
 const destSelect = document.getElementById("destSelect");
 destSelect.addEventListener("change", (ev) => {
   dest.destNum = ev.target.options[ev.target.selectedIndex].value;
   dest.destName = ev.target.options[ev.target.selectedIndex].innerText;
-  cmd = `${src.srcName} -> ${dest.destName}`;
-  console.log(cmd);
+  cmd = `Src ${src.srcName} -> Dest ${dest.destName}`;
   cmdBar.innerText = cmd;
   takeButton.style.backgroundColor = defaultBgColor;
   takeButton.innerText = "Take!";
+  hasTaken = false;
   for (let i = 1; i < 33; i++) {
     document.getElementById("src_" + i).style.backgroundColor = "white";
   }
@@ -41,11 +44,11 @@ const srcButtonClicked = (ev) => {
   ev.target.style.backgroundColor = "yellow";
   src.srcNum = ev.target.id.split("_")[ev.target.id.split("_").length - 1];
   src.srcName = ev.target.innerText;
-  cmd = `${src.srcName} -> ${dest.destName}`;
-  console.log(cmd);
+  cmd = `Src ${src.srcName} -> Dest ${dest.destName}`;
   cmdBar.innerText = cmd;
   takeButton.style.backgroundColor = defaultBgColor;
   takeButton.innerText = "Take!";
+  hasTaken = false;
 };
 
 const row1 = document.getElementById("row1");
@@ -80,18 +83,19 @@ socket.on("init", (info) => {
   for (let i = 1; i < 33; i++) {
     const option = document.createElement("option");
     option.value = i;
-    option.innerText = info.destsNames[i];
+    option.innerText = info.dests[i];
     destSelect.appendChild(option);
   }
 
   for (let i = 1; i < 33; i++) {
-    document.getElementById("src_" + i).innerText = info.srcsNames[i];
+    document.getElementById("src_" + i).innerText = info.srcs[i];
   }
 
   destSelect.selectedIndex = info.selectedDestNum - 1;
+  console.log(destSelect.selectedIndex);
   dest.destNum = destSelect.options[destSelect.selectedIndex].value;
   dest.destName = destSelect.options[destSelect.selectedIndex].innerText;
-  cmd = `${src.srcName} -> ${dest.destName}`;
+  cmd = `Src ${src.srcName} -> Dest ${dest.destName}`;
   cmdBar.innerText = cmd;
   socket.emit("destIndex", dest.destNum);
 });
@@ -100,15 +104,17 @@ socket.on("selectedDest", (destNum) => {
   destSelect.selectedIndex = destNum - 1;
   dest.destNum = destSelect.options[destIndex].value;
   dest.destName = destSelect.options[destIndex].innerText;
-  cmd = `${src.srcName} -> ${dest.destName}`;
+  cmd = `Src ${src.srcName} -> Dest ${dest.destName}`;
   cmdBar.innerText = cmd;
   socket.emit("destNum", dest.destNum);
 });
 
 socket.on("setSrcSelection", (src) => {
   document.getElementById("src_" + src).style.backgroundColor = "red";
-  takeButton.innerText = "Taken!";
-  takeButton.style.backgroundColor = "blue";
+  if (hasTaken) {
+    takeButton.innerText = "Taken!";
+    takeButton.style.backgroundColor = "blue";
+  }
 });
 
 socket.on("error", (err) => {

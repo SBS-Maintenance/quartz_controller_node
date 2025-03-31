@@ -15,7 +15,7 @@ app.use("/", express.static(publicPath));
 const configIni = require("config.ini");
 const conf = configIni.load("./config.ini");
 
-let selectedDestNum = conf.settings.dest ? conf.settings.dest : "0";
+let selectedDestNum = conf.settings.destNum ? conf.settings.destNum : "0";
 const targetIP = conf.settings.ip;
 
 const net = require("net");
@@ -23,6 +23,12 @@ const socket = net.connect({ host: targetIP, port: 23 });
 socket.setEncoding("ascii");
 
 let src = "0";
+
+const Names = { destNames: {}, srcNames: {} };
+for (let i = 1; i < 33; i++) {
+  Names.destNames[i] = conf.dest[i];
+  Names.srcNames[i] = conf.src[i];
+}
 
 socket.on("error", (err) => {
   console.log(err);
@@ -53,12 +59,6 @@ const interrogate = (destNum) => {
   socket.write(Buffer.from(`.IV${selectedDestNum}\r`, "ascii"));
 };
 
-const Names = { destNames: {}, srcNames: {} };
-for (let i = 1; i < 33; i++) {
-  Names.destsNames[i] = conf.dest[i];
-  Names.srcsNames[i] = conf.src[i];
-}
-
 const saveDest = (destNum) => {
   conf.settings.destNum = destNum;
   selectedDestNum = destNum;
@@ -77,6 +77,7 @@ io.on("connection", (sock) => {
   });
 
   sock.on("take", (src) => {
+    console.log(`${src} -> ${selectedDestNum} Take cmd rcvd`);
     socket.write(Buffer.from(`.SV${selectedDestNum},${src}\r`, "ascii"));
   });
 
