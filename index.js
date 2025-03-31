@@ -19,42 +19,9 @@ electronApp.whenReady().then(() => {
   });
 });
 
-const { dialog } = require("electron");
 const { autoUpdater } = require("electron-updater");
-const ProgressBar = require("electron-progressbar");
 
-autoUpdater.autoDownload = true;
-autoUpdater.once("download-progress", (progressObj) => {
-  progressBar = new ProgressBar({
-    text: "Downloading...",
-    detail: "Downloading...",
-  });
-
-  progressBar
-    .on("completed", function () {
-      console.info(`completed...`);
-      progressBar.detail = "Task completed. Exiting...";
-    })
-    .on("aborted", function () {
-      console.info(`aborted...`);
-    });
-});
-
-autoUpdater.on("update-downloaded", () => {
-  progressBar.setCompleted();
-  dialog
-    .showMessageBox({
-      type: "info",
-      title: "Update ready",
-      message: "Install & restart now?",
-      buttons: ["Restart", "Later"],
-    })
-    .then((result) => {
-      const buttonIndex = result.response;
-
-      if (buttonIndex === 0) autoUpdater.quitAndInstall(false, true);
-    });
-});
+autoUpdater.checkForUpdatesAndNotify();
 
 electronApp.on("window-all-closed", () => {
   if (process.platform != "darwin") {
@@ -74,7 +41,7 @@ const publicPath = path.join(__dirname);
 app.use("/", express.static(publicPath));
 
 const configIni = require("config.ini");
-const conf = configIni.load("./config.ini");
+const conf = configIni.load(electronApp.getAppPath() + "/config.ini");
 
 let selectedDestNum = conf.settings.destNum ? conf.settings.destNum : "0";
 const targetIP = conf.settings.ip;

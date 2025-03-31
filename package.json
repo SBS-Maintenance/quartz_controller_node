@@ -1,6 +1,6 @@
 {
   "name": "quartz_controller_node",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,7 +12,6 @@
   "description": "",
   "dependencies": {
     "config.ini": "^0.0.60",
-    "electron-progressbar": "^2.2.1",
     "electron-updater": "^6.6.2",
     "express": "^4.21.2",
     "socket.io": "^4.8.1",
@@ -28,9 +27,6 @@
   },
   "build": {
     "appId": "com.sbs.quartz_controller_node",
-    "publish": {
-      "provider": "github"
-    },
     "win": {
       "publish": [
         "github"

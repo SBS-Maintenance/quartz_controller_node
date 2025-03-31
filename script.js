@@ -97,7 +97,7 @@ socket.on("init", (info) => {
   dest.destName = destSelect.options[destSelect.selectedIndex].innerText;
   cmd = `Src ${src.srcName} -> Dest ${dest.destName}`;
   cmdBar.innerText = cmd;
-  socket.emit("destIndex", dest.destNum);
+  socket.emit("destNum", dest.destNum);
 });
 
 socket.on("selectedDest", (destNum) => {
