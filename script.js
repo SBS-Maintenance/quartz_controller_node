@@ -3,6 +3,8 @@ const socket = io("http://localhost:3000");
 const src = { srcNum: 0, srcName: "?" };
 const dest = { destNum: 0, destName: "?" };
 
+let currentSrcNum = 0;
+
 let cmd = "";
 
 const cmdBar = document.getElementById("cmdBar");
@@ -41,6 +43,7 @@ const srcButtonClicked = (ev) => {
     document.getElementById("src_" + src.srcNum).style.backgroundColor =
       "white";
   }
+  document.getElementById("src_" + currentSrcNum).style.backgroundColor = "red";
   ev.target.style.backgroundColor = "yellow";
   src.srcNum = ev.target.id.split("_")[ev.target.id.split("_").length - 1];
   src.srcName = ev.target.innerText;
@@ -110,6 +113,7 @@ socket.on("selectedDest", (destNum) => {
 });
 
 socket.on("setSrcSelection", (src) => {
+  currentSrcNum = src;
   document.getElementById("src_" + src).style.backgroundColor = "red";
   if (hasTaken) {
     takeButton.innerText = "Taken!";
