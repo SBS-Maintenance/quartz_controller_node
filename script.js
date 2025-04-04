@@ -43,7 +43,10 @@ const srcButtonClicked = (ev) => {
     document.getElementById("src_" + src.srcNum).style.backgroundColor =
       "white";
   }
-  document.getElementById("src_" + currentSrcNum).style.backgroundColor = "red";
+  if (currentSrcNum != 0) {
+    document.getElementById("src_" + currentSrcNum).style.backgroundColor =
+      "red";
+  }
   ev.target.style.backgroundColor = "yellow";
   src.srcNum = ev.target.id.split("_")[ev.target.id.split("_").length - 1];
   src.srcName = ev.target.innerText;
@@ -83,10 +86,13 @@ for (let i = 17; i < 33; i++) {
 }
 
 socket.on("init", (info) => {
-  for (let i = 1; i < 33; i++) {
+  // for (let i = 1; i < 33; i++) {
+  for (let i = 1; i < 4; i++) {
     const option = document.createElement("option");
-    option.value = i;
-    option.innerText = info.dests[i];
+    // option.value = i;
+    option.value = i + 7;
+    // option.innerText = info.dests[i];
+    option.innerText = info.dests[i + 7];
     destSelect.appendChild(option);
   }
 
@@ -94,7 +100,8 @@ socket.on("init", (info) => {
     document.getElementById("src_" + i).innerText = info.srcs[i];
   }
 
-  destSelect.selectedIndex = info.selectedDestNum - 1;
+  // destSelect.selectedIndex = info.selectedDestNum - 1;
+  destSelect.selectedIndex = info.selectedDestNum - 1 - 7;
   console.log(destSelect.selectedIndex);
   dest.destNum = destSelect.options[destSelect.selectedIndex].value;
   dest.destName = destSelect.options[destSelect.selectedIndex].innerText;

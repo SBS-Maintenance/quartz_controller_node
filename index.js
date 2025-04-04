@@ -54,8 +54,11 @@ let src = "0";
 
 const Names = { destNames: {}, srcNames: {} };
 for (let i = 1; i < 33; i++) {
-  Names.destNames[i] = conf.dest[i];
   Names.srcNames[i] = conf.src[i];
+}
+
+for (let i = 8; i < 11; i++) {
+  Names.destNames[i] = conf.dest[i];
 }
 
 socket.on("error", (err) => {
