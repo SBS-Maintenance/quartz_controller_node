@@ -1,14 +1,17 @@
 const express = require("express");
 const { Server } = require("socket.io");
 
-const { BrowserWindow } = require("electron");
+const { BrowserWindow, ipcMain } = require("electron");
 const electronApp = require("electron").app;
 
 const { autoUpdater } = require("electron-updater");
 
+let win;
+
 const createWindow = () => {
-  const win = new BrowserWindow({ width: 1800, height: 350 });
+  win = new BrowserWindow({ width: 1800, height: 350 });
   win.loadFile("./index.html");
+  win.webContents.sen;
 };
 
 electronApp.whenReady().then(() => {
@@ -21,6 +24,22 @@ electronApp.whenReady().then(() => {
       createWindow();
     }
   });
+});
+
+ipcMain.on("app_version", (event) => {
+  event.sender.send("app_version", { version: electronApp.getVersion() });
+});
+
+autoUpdater.on("update-available", () => {
+  win.webContents.send("update_available");
+});
+
+autoUpdater.on("update-downloaded", () => {
+  win.webContents.send("update_downloaded");
+});
+
+ipcMain.on("restart_app", () => {
+  autoUpdater.quitAndInstall();
 });
 
 electronApp.on("window-all-closed", () => {
@@ -47,6 +66,7 @@ let selectedDestNum = conf.settings.destNum ? conf.settings.destNum : "0";
 const targetIP = conf.settings.ip;
 
 const net = require("net");
+const { version } = require("os");
 const socket = net.connect({ host: targetIP, port: 23 });
 socket.setEncoding("ascii");
 
