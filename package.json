@@ -31,7 +31,7 @@
       "publish": [
         "github"
       ],
-      "verifyUpdateCodeSignature": false,
+      "verifyUpdateCodeSignature": true,
       "target": [
         {
           "target": "nsis",
