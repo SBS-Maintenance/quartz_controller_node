@@ -4,6 +4,10 @@ const { Server } = require("socket.io");
 const { BrowserWindow } = require("electron");
 const electronApp = require("electron").app;
 
+const { autoUpdater } = require("electron-updater");
+
+autoUpdater.checkForUpdatesAndNotify();
+
 const createWindow = () => {
   const win = new BrowserWindow({ width: 1800, height: 350 });
   win.loadFile("./index.html");
@@ -18,10 +22,6 @@ electronApp.whenReady().then(() => {
     }
   });
 });
-
-const { autoUpdater } = require("electron-updater");
-
-autoUpdater.checkForUpdatesAndNotify();
 
 electronApp.on("window-all-closed", () => {
   if (process.platform != "darwin") {
