@@ -6,8 +6,6 @@ const electronApp = require("electron").app;
 
 const { autoUpdater } = require("electron-updater");
 
-autoUpdater.checkForUpdatesAndNotify();
-
 const createWindow = () => {
   const win = new BrowserWindow({ width: 1800, height: 350 });
   win.loadFile("./index.html");
@@ -15,6 +13,8 @@ const createWindow = () => {
 
 electronApp.whenReady().then(() => {
   createWindow();
+
+  autoUpdater.checkForUpdatesAndNotify();
 
   electronApp.on("activate", () => {
     if (BrowserWindow.getAllWindows().length == 0) {
