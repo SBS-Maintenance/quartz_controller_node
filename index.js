@@ -9,9 +9,12 @@ const { autoUpdater } = require("electron-updater");
 let win;
 
 const createWindow = () => {
-  win = new BrowserWindow({ width: 1800, height: 350 });
+  win = new BrowserWindow({
+    width: 1800,
+    height: 350,
+    webPreferences: { nodeIntegration: true, contextIsolation: false },
+  });
   win.loadFile("./index.html");
-  win.webContents.sen;
 };
 
 electronApp.whenReady().then(() => {
@@ -39,7 +42,7 @@ autoUpdater.on("update-downloaded", () => {
 });
 
 ipcMain.on("restart_app", () => {
-  autoUpdater.quitAndInstall();
+  autoUpdater.quitAndInstall(true, true);
 });
 
 electronApp.on("window-all-closed", () => {
