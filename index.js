@@ -80,7 +80,7 @@ for (let i = 1; i < 33; i++) {
   Names.srcNames[i] = conf.src[i];
 }
 
-for (let i = 12; i <= 17; i++) {
+for (let i = 1; i <= 32; i++) {
   Names.destNames[i] = conf.dest[i];
 }
 

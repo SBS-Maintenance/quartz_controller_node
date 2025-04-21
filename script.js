@@ -86,33 +86,47 @@ for (let i = 17; i < 33; i++) {
 }
 
 socket.on("init", (info) => {
-  // for (let i = 1; i < 33; i++) {
-  for (let i = 1; i < 7; i++) {
-    const option = document.createElement("option");
-    // option.value = i;
-    option.value = i + 11;
-    // option.innerText = info.dests[i];
-    option.innerText = info.dests[i + 11];
-    destSelect.appendChild(option);
+  // for (let i = 1; i < 7; i++) {
+  //   const option = document.createElement("option");
+  //   option.value = i + 11;
+  //   option.innerText = info.dests[i + 11];
+  //   destSelect.appendChild(option);
+  // }
+
+  for (let i = 1; i <= 32; i++) {
+    console.log(info.dests[i]);
+    if (info.dests[i] != "") {
+      const option = document.createElement("option");
+      option.value = i;
+      option.innerText = info.dests[i];
+      destSelect.appendChild(option);
+    }
   }
 
   for (let i = 1; i < 33; i++) {
     document.getElementById("src_" + i).innerText = info.srcs[i];
   }
 
-  // destSelect.selectedIndex = info.selectedDestNum - 1;
-  destSelect.selectedIndex = info.selectedDestNum - 1 - 11;
-  dest.destNum = destSelect.options[destSelect.selectedIndex].value;
-  dest.destName = destSelect.options[destSelect.selectedIndex].innerText;
+  for (let i = 0; i < 32; i++) {
+    if (destSelect.options[i].value == info.selectedDestNum) {
+      destSelect.selectedIndex = i;
+      dest.destNum = destSelect.options[i].value;
+      dest.destName = destSelect.options[i].innerText;
+    }
+  }
   cmd = `Src ${src.srcName} -> Dest ${dest.destName}`;
   cmdBar.innerText = cmd;
   socket.emit("destNum", dest.destNum);
 });
 
 socket.on("selectedDest", (destNum) => {
-  destSelect.selectedIndex = destNum - 1;
-  dest.destNum = destSelect.options[destIndex].value;
-  dest.destName = destSelect.options[destIndex].innerText;
+  for (let i = 0; i < 32; i++) {
+    if (destSelect.options[i].value == info.selectedDestNum) {
+      destSelect.selectedIndex = i;
+      dest.destNum = destSelect.options[i].value;
+      dest.destName = destSelect.options[i].innerText;
+    }
+  }
   cmd = `Src ${src.srcName} -> Dest ${dest.destName}`;
   cmdBar.innerText = cmd;
   socket.emit("destNum", dest.destNum);

@@ -43,13 +43,6 @@
     },
     "directories": {
       "output": "build"
-    },
-    "extraFiles": [
-      {
-        "from": "./config.ini",
-        "to": "./",
-        "filter": "**/*"
-      }
-    ]
+    }
   }
 }
