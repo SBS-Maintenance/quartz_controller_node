@@ -63,7 +63,8 @@ const publicPath = path.join(__dirname);
 app.use("/", express.static(publicPath));
 
 const configIni = require("config.ini");
-const conf = configIni.load(electronApp.getAppPath() + "/config.ini");
+console.log(electronApp.getAppPath());
+const conf = configIni.load(electronApp.getAppPath() + "/../../config.ini");
 
 let selectedDestNum = conf.settings.destNum ? conf.settings.destNum : "0";
 const targetIP = conf.settings.ip;
