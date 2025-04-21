@@ -107,7 +107,7 @@ socket.on("init", (info) => {
     document.getElementById("src_" + i).innerText = info.srcs[i];
   }
 
-  for (let i = 0; i < 32; i++) {
+  for (let i = 0; i < destSelect.options.length; i++) {
     if (destSelect.options[i].value == info.selectedDestNum) {
       destSelect.selectedIndex = i;
       dest.destNum = destSelect.options[i].value;
@@ -133,7 +133,11 @@ socket.on("selectedDest", (destNum) => {
 });
 
 socket.on("setSrcSelection", (src) => {
+  console.log(currentSrcNum)
+  if(currentSrcNum!=0){  document.getElementById("src_" + currentSrcNum).style.backgroundColor = "white";}
+
   currentSrcNum = src;
+  console.log(src)
   document.getElementById("src_" + src).style.backgroundColor = "red";
   if (hasTaken) {
     takeButton.innerText = "Taken!";

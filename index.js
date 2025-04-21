@@ -99,12 +99,13 @@ socket.on("data", (data) => {
   const rcvdString = data.toString();
   console.log(rcvdString);
   if (rcvdString.startsWith(".AV")) {
-    src = rcvdString.split(",")[1].split("\r")[0];
+    src = parseInt(rcvdString.split(",")[1].split("\r")[0]);
+    console.log(src)
     io.emit("setSrcSelection", src);
   }
   if (rcvdString.startsWith(".UV")) {
-    if (rcvdString.split(",")[0].split("V")[1] == selectedDestNum) {
-      io.emit("setSrcSelection", rcvdString.split(",")[1].split("\r")[0]);
+    if (parseInt(rcvdString.split(",")[0].split("V")[1]) == selectedDestNum) {
+      io.emit("setSrcSelection",parseInt(rcvdString.split(",")[1].split("\r")[0]));
     }
   }
 });
