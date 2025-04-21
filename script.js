@@ -87,12 +87,12 @@ for (let i = 17; i < 33; i++) {
 
 socket.on("init", (info) => {
   // for (let i = 1; i < 33; i++) {
-  for (let i = 1; i < 4; i++) {
+  for (let i = 1; i < 7; i++) {
     const option = document.createElement("option");
     // option.value = i;
-    option.value = i + 7;
+    option.value = i + 11;
     // option.innerText = info.dests[i];
-    option.innerText = info.dests[i + 7];
+    option.innerText = info.dests[i + 11];
     destSelect.appendChild(option);
   }
 
@@ -101,8 +101,7 @@ socket.on("init", (info) => {
   }
 
   // destSelect.selectedIndex = info.selectedDestNum - 1;
-  destSelect.selectedIndex = info.selectedDestNum - 1 - 7;
-  console.log(destSelect.selectedIndex);
+  destSelect.selectedIndex = info.selectedDestNum - 1 - 11;
   dest.destNum = destSelect.options[destSelect.selectedIndex].value;
   dest.destName = destSelect.options[destSelect.selectedIndex].innerText;
   cmd = `Src ${src.srcName} -> Dest ${dest.destName}`;

@@ -69,7 +69,7 @@ let selectedDestNum = conf.settings.destNum ? conf.settings.destNum : "0";
 const targetIP = conf.settings.ip;
 
 const net = require("net");
-const { version } = require("os");
+
 const socket = net.connect({ host: targetIP, port: 23 });
 socket.setEncoding("ascii");
 
@@ -80,7 +80,7 @@ for (let i = 1; i < 33; i++) {
   Names.srcNames[i] = conf.src[i];
 }
 
-for (let i = 8; i < 11; i++) {
+for (let i = 12; i <= 17; i++) {
   Names.destNames[i] = conf.dest[i];
 }
 
@@ -124,6 +124,7 @@ const saveDest = (destNum) => {
 };
 
 io.on("connection", (sock) => {
+  console.log(Names.destNames);
   sock.emit("init", {
     dests: Names.destNames,
     srcs: Names.srcNames,
