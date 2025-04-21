@@ -121,7 +121,7 @@ socket.on("init", (info) => {
 
 socket.on("selectedDest", (destNum) => {
   for (let i = 0; i < 32; i++) {
-    if (destSelect.options[i].value == info.selectedDestNum) {
+    if (destSelect.options[i].value == destNum) {
       destSelect.selectedIndex = i;
       dest.destNum = destSelect.options[i].value;
       dest.destName = destSelect.options[i].innerText;
