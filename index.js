@@ -10,7 +10,7 @@ let win;
 
 const createWindow = () => {
   win = new BrowserWindow({
-    width: 1800,
+    width: 1100,
     height: 350,
     webPreferences: { nodeIntegration: true, contextIsolation: false },
   });
@@ -68,6 +68,7 @@ const conf = configIni.load(electronApp.getAppPath() + "/../../config.ini");
 
 let selectedDestNum = conf.settings.destNum ? conf.settings.destNum : "0";
 const targetIP = conf.settings.ip;
+const targetPort = conf.settings.port;
 
 const net = require("net");
 
@@ -76,13 +77,11 @@ socket.setEncoding("ascii");
 
 let src = "0";
 
-const Names = { destNames: {}, srcNames: {} };
-for (let i = 1; i < 33; i++) {
-  Names.srcNames[i] = conf.src[i];
-}
+const Names = { destNames: {} };
 
 for (let i = 1; i <= 32; i++) {
   Names.destNames[i] = conf.dest[i];
+  console.log(Names.destNames[i]);
 }
 
 socket.on("error", (err) => {
@@ -100,12 +99,14 @@ socket.on("data", (data) => {
   console.log(rcvdString);
   if (rcvdString.startsWith(".AV")) {
     src = parseInt(rcvdString.split(",")[1].split("\r")[0]);
-    console.log(src)
     io.emit("setSrcSelection", src);
   }
   if (rcvdString.startsWith(".UV")) {
     if (parseInt(rcvdString.split(",")[0].split("V")[1]) == selectedDestNum) {
-      io.emit("setSrcSelection",parseInt(rcvdString.split(",")[1].split("\r")[0]));
+      io.emit(
+        "setSrcSelection",
+        parseInt(rcvdString.split(",")[1].split("\r")[0])
+      );
     }
   }
 });
@@ -126,10 +127,8 @@ const saveDest = (destNum) => {
 };
 
 io.on("connection", (sock) => {
-  console.log(Names.destNames);
   sock.emit("init", {
     dests: Names.destNames,
-    srcs: Names.srcNames,
     selectedDestNum: selectedDestNum,
   });
 

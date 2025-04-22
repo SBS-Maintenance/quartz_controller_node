@@ -16,7 +16,6 @@ const defaultBgColor = takeButton.style.backgroundColor;
 takeButton.addEventListener("click", (ev) => {
   socket.emit("take", src.srcNum);
   ev.target.innerText = "Taking...";
-  ev.target.style.backgroundColor = "yellow";
   for (let i = 1; i < 33; i++) {
     document.getElementById("src_" + i).style.backgroundColor = "white";
   }
@@ -29,7 +28,6 @@ destSelect.addEventListener("change", (ev) => {
   dest.destName = ev.target.options[ev.target.selectedIndex].innerText;
   cmd = `Src ${src.srcName} -> Dest ${dest.destName}`;
   cmdBar.innerText = cmd;
-  takeButton.style.backgroundColor = defaultBgColor;
   takeButton.innerText = "Take!";
   hasTaken = false;
   for (let i = 1; i < 33; i++) {
@@ -86,15 +84,7 @@ for (let i = 17; i < 33; i++) {
 }
 
 socket.on("init", (info) => {
-  // for (let i = 1; i < 7; i++) {
-  //   const option = document.createElement("option");
-  //   option.value = i + 11;
-  //   option.innerText = info.dests[i + 11];
-  //   destSelect.appendChild(option);
-  // }
-
   for (let i = 1; i <= 32; i++) {
-    console.log(info.dests[i]);
     if (info.dests[i] != "") {
       const option = document.createElement("option");
       option.value = i;
@@ -104,7 +94,7 @@ socket.on("init", (info) => {
   }
 
   for (let i = 1; i < 33; i++) {
-    document.getElementById("src_" + i).innerText = info.srcs[i];
+    document.getElementById("src_" + i).innerText = i;
   }
 
   for (let i = 0; i < destSelect.options.length; i++) {
@@ -120,6 +110,7 @@ socket.on("init", (info) => {
 });
 
 socket.on("selectedDest", (destNum) => {
+  console.log(destNum);
   for (let i = 0; i < 32; i++) {
     if (destSelect.options[i].value == destNum) {
       destSelect.selectedIndex = i;
@@ -133,15 +124,16 @@ socket.on("selectedDest", (destNum) => {
 });
 
 socket.on("setSrcSelection", (src) => {
-  console.log(currentSrcNum)
-  if(currentSrcNum!=0){  document.getElementById("src_" + currentSrcNum).style.backgroundColor = "white";}
+  console.log(currentSrcNum);
+  if (currentSrcNum != 0) {
+    document.getElementById("src_" + currentSrcNum).style.backgroundColor =
+      "white";
+  }
 
   currentSrcNum = src;
-  console.log(src)
-  document.getElementById("src_" + src).style.backgroundColor = "red";
+  document.getElementById("src_" + src).style.backgroundColor = "#e4f5c6";
   if (hasTaken) {
     takeButton.innerText = "Taken!";
-    takeButton.style.backgroundColor = "blue";
   }
 });
 

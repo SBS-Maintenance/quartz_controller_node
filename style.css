@@ -1,10 +1,20 @@
+body {
+  background-color: rgb(114, 114, 114);
+}
+
 fieldset {
   width: fit-content;
   height: fit-content;
 }
 
+textarea {
+  size: 18pt;
+  resize: none;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .src-button {
-  width: 85px;
+  width: 40px;
   height: 40px;
   margin: 10px;
 }
@@ -14,10 +24,22 @@ fieldset {
   width: 200px;
 }
 
+button {
+  font-weight: bold;
+  font-size: 18pt;
+  box-shadow: 0px 0px 5px #444;
+}
+
+button:active {
+  transform: scale(0.98);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+
 #takeButton {
   height: 30px;
   width: 100px;
   margin-left: 20px;
+  background-color: red;
 }
 
 #notification {
