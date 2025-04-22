@@ -7,21 +7,22 @@ fieldset {
   height: fit-content;
 }
 
-textarea {
-  size: 18pt;
-  resize: none;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
 .src-button {
   width: 40px;
   height: 40px;
-  margin: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #cmdBar {
-  height: 15px;
-  width: 200px;
+  height: 20px;
+  width: 140px;
+  resize: none;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 5px;
 }
 
 button {
@@ -54,4 +55,27 @@ button:active {
 
 .hidden {
   display: none;
+}
+
+.container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.item {
+  display: inline-block;
+}
+
+.left {
+  margin-right: auto;
+  margin-top: 5px;
+}
+
+.inner-container {
+  display: table;
+}
+
+.inner-item {
+  display: table-cell;
+  vertical-align: middle;
 }

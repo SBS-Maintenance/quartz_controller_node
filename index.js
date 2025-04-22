@@ -11,10 +11,11 @@ let win;
 const createWindow = () => {
   win = new BrowserWindow({
     width: 1100,
-    height: 350,
+    height: 252,
     webPreferences: { nodeIntegration: true, contextIsolation: false },
   });
   win.loadFile("./index.html");
+  win.setMenuBarVisibility(false);
 };
 
 electronApp.whenReady().then(() => {

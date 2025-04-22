@@ -10,10 +10,19 @@
     <link rel="stylesheet" href="style.css" />
     <meta name="author" content="Kim Syehoon" />
   </head>
+
   <body>
-    <label for="dest">Destination:</label>
-    <select name="dest" id="destSelect"></select>
-    <br />
+    <div class="container">
+      <div class="item left">
+        <label for="dest">Destination:</label>
+        <select name="dest" id="destSelect"></select>
+      </div>
+      <div class="inner-container">
+        <!-- <label for="cmdBar">Cmd:</label> -->
+        <div class="inner-item"><textarea id="cmdBar"></textarea></div>
+        <div class="inner-item"><button id="takeButton">Take!</button></div>
+      </div>
+    </div>
     <fieldset>
       <legend>Source</legend>
       <table>
@@ -22,9 +31,6 @@
       </table>
     </fieldset>
     <br />
-    <!-- <label for="cmdBar">Cmd:</label> -->
-    <textarea id="cmdBar"></textarea>
-    <button id="takeButton">Take!</button>
     <div id="notification" class="hidden">
       <p id="message"></p>
       <button id="close-button">닫기</button>

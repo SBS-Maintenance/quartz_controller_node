@@ -43,7 +43,7 @@ const srcButtonClicked = (ev) => {
   }
   if (currentSrcNum != 0) {
     document.getElementById("src_" + currentSrcNum).style.backgroundColor =
-      "red";
+      "#61CC80";
   }
   ev.target.style.backgroundColor = "yellow";
   src.srcNum = ev.target.id.split("_")[ev.target.id.split("_").length - 1];
@@ -66,6 +66,7 @@ for (let i = 1; i < 17; i++) {
     srcButtonClicked(ev);
   });
   button.style.backgroundColor = "white";
+  button.style.marginBottom = "5px";
   row1.append(td);
 }
 
@@ -80,6 +81,7 @@ for (let i = 17; i < 33; i++) {
     srcButtonClicked(ev);
   });
   button.style.backgroundColor = "white";
+  button.style.marginTop = "5px";
   row2.append(td);
 }
 
@@ -131,7 +133,7 @@ socket.on("setSrcSelection", (src) => {
   }
 
   currentSrcNum = src;
-  document.getElementById("src_" + src).style.backgroundColor = "#e4f5c6";
+  document.getElementById("src_" + src).style.backgroundColor = "#61CC80";
   if (hasTaken) {
     takeButton.innerText = "Taken!";
   }
