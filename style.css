@@ -1,5 +1,6 @@
 body {
   background-color: rgb(114, 114, 114);
+  overflow: hidden;
 }
 
 fieldset {
@@ -69,13 +70,20 @@ button:active {
 .left {
   margin-right: auto;
   margin-top: 5px;
+  margin-left: 3px;
 }
 
 .inner-container {
   display: table;
+  margin-right: 3px;
 }
 
 .inner-item {
   display: table-cell;
   vertical-align: middle;
+}
+
+#logo {
+  margin-top: 10px;
+  margin-right: 0px;
 }

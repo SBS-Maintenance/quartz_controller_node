@@ -10,12 +10,13 @@ let win;
 
 const createWindow = () => {
   win = new BrowserWindow({
-    width: 1100,
-    height: 252,
+    width: 1090,
+    height: 260,
     webPreferences: { nodeIntegration: true, contextIsolation: false },
   });
   win.loadFile("./index.html");
   win.setMenuBarVisibility(false);
+  win.resizable = false;
 };
 
 electronApp.whenReady().then(() => {
@@ -73,7 +74,7 @@ const targetPort = conf.settings.port;
 
 const net = require("net");
 
-const socket = net.connect({ host: targetIP, port: 23 });
+const socket = net.connect({ host: targetIP, port: targetPort });
 socket.setEncoding("ascii");
 
 let src = "0";
